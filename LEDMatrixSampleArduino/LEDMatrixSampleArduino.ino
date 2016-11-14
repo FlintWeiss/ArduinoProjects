@@ -4,6 +4,9 @@
 #include <Adafruit_NeoMatrix.h>
 #include <gamma.h>
 
+#include "ColorDefinitions.h"
+#include "SpriteBitmaps.h"
+
 /*-------------------------------------------------------------------------
 
   --------------------------------------------------------------------*/
@@ -73,7 +76,7 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(NUM_COL, NUM_ROW, 1, 1, PIXEL_PIN
   NEO_MATRIX_TOP + NEO_MATRIX_LEFT + NEO_MATRIX_COLUMNS + NEO_MATRIX_ZIGZAG,
   PIXEL_TYPE);
 
-String webText = "Liberty Robotics FRC 4131: The Iron Patriots   ";
+String webText = "Liberty Robotics FRC 4131 The Iron Patriots   ";
 
 //-------------------------------------------------------------------------------
 void setup() {
@@ -100,29 +103,17 @@ void loop() {
       
    lightsOff();
    
-/*  
-  colorWipe(wholeStrip.Color(200,100,0), 10);
-  delay(500);
-  
-   lightsOff();
-*/
+   testMatrixWipe(1); lightsOff(); delay(500);
 
-   testMatrixWipe(5); lightsOff(); delay(500);
-
-  
    // fix the screen with purple 
-   matrix.fillRect(0, 0, NUM_COL, NUM_ROW, matrix.Color(150, 50, 180)); matrix.show();
+   matrix.fillRect(0, 0, NUM_COL, NUM_ROW, color(PURPLE)); matrix.show();
    delay(1000); 
-   
-   //lightsOff(); delay(500);
- 
+    
    // draw a box in yellow 
    // drawRect parameters: x,y starting cooridnates, then width and height, then color
-   matrix.drawRect(0, 0, NUM_COL, NUM_ROW, matrix.Color(200, 200, 0)); matrix.show();
+   matrix.drawRect(0, 0, NUM_COL, NUM_ROW, color(YELLOW)); matrix.show();
    delay(1000); 
-   
-   //lightsOff(); delay(500);
-    
+       
    // draw an 'X' in red 
    // Use the number of rows to force a "square X"
    int xHeight = NUM_ROW - 1;
@@ -141,27 +132,18 @@ void loop() {
    
    delay(1000); 
    lightsOff(); delay(500); 
-    
-   // draw a blue circle 
-   // drawCircle parameters: x,y center point, then radius and color
-   matrix.drawCircle(5, 3, 3, matrix.Color(0, 0, 70)); matrix.show();
-   delay(1000); 
-   //lightsOff(); delay(250);
-    
-   // fill a violet circle 
-   matrix.fillCircle(20, 4, 3, matrix.Color(70, 0, 70)); matrix.show();
-   delay(3000); 
-   lightsOff(); delay(500); 
-    
-    rainbowCycle(1);
-    lightsOff(); delay(250);
 
+   alderaan(); lightsOff(); delay(500); 
+    
+   rainbowCycle(1); lightsOff(); delay(250);
+
+   pacman(); lightsOff(); delay(250);
+   
    // Draw a bunch of rectangles "going down"
    matrix.drawRect(0, 0, NUM_COL,   NUM_ROW,   matrix.Color(255, 0, 0)); matrix.show(); delay(500); 
    matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, matrix.Color(0, 255, 0)); matrix.show(); delay(500); 
    matrix.drawRect(2, 2, NUM_COL-4, NUM_ROW-4, matrix.Color(0, 0, 255)); matrix.show(); delay(500); 
    matrix.drawRect(3, 3, NUM_COL-6, NUM_ROW-6, matrix.Color(128, 128, 128)); matrix.show(); delay(500); 
-   //delay(2000);    
   
    // black out the dispaly similarly
    matrix.drawRect(3, 3, NUM_COL-6, NUM_ROW-6, matrix.Color(0, 0, 0)); matrix.show(); delay(500); 
@@ -169,49 +151,153 @@ void loop() {
    matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, matrix.Color(0, 0, 0)); matrix.show(); delay(500); 
    matrix.drawRect(0, 0, NUM_COL,   NUM_ROW, matrix.Color(0, 0, 0)); matrix.show(); delay(500); 
 
-   // try a going through space animation, where the interior most box works its way out to the edge
-   for(int i=0; i<10; i++) {
-      matrix.drawRect(0, 0, NUM_COL,   NUM_ROW,   matrix.Color(0, 0, 0));
-      matrix.drawRect(3, 3, NUM_COL-6, NUM_ROW-6, matrix.Color(128, 128, 128)); 
-      matrix.show(); delay(100);
-
-      matrix.drawRect(3, 3, NUM_COL-6, NUM_ROW-6, matrix.Color(0, 0, 0)); 
-      matrix.drawRect(2, 2, NUM_COL-4, NUM_ROW-4, matrix.Color(128, 128, 255));
-      matrix.show(); delay(100);
-
-      matrix.drawRect(2, 2, NUM_COL-4, NUM_ROW-4, matrix.Color(0, 0, 0));
-      matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, matrix.Color(128, 128, 128)); 
-      matrix.show(); delay(100);
-
-      matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, matrix.Color(0, 0, 0)); 
-      matrix.drawRect(0, 0, NUM_COL,   NUM_ROW,   matrix.Color(128, 128, 128));
-      matrix.show(); delay(100);
-   }
-   delay(500); 
+   boxAnimation(5); lightsOff(); delay(250);
   
-   colorWipe(wholeStrip.Color(255, 0, 0), 5, 1); // Red
-   colorWipe(wholeStrip.Color(0, 255, 0), 5, 0); // Green
-   colorWipe(wholeStrip.Color(0, 0, 255), 5, 1); // Blue
+   colorWipe(wholeStrip.Color(255, 0, 0), 3, 1); // Red
+   colorWipe(wholeStrip.Color(0, 255, 0), 3, 0); // Green
+   colorWipe(wholeStrip.Color(0, 0, 255), 3, 1); // Blue
 
    // Send a theater pixel chase in...
    theaterChase(wholeStrip.Color(127, 127, 127), 50); // White
    theaterChase(wholeStrip.Color(127, 0, 0), 50); // Red
    theaterChase(wholeStrip.Color(0, 0, 127), 50); // Blue
-   //delay(1000);
 
-   theaterChaseRainbow(50);
-   
-   //rainbow(3);
-   lightsOff(); 
-    
-    delay(500);
+   theaterChaseRainbow(50); lightsOff(); delay(500);
 
-    //Serial.println(webText);
-    scrollText(webText);
+   scrollText(webText);
 
     delay(200);
 } // end loop
 
+/*==========================================================================
+  alderaan: death start blowing up alderaan animation without sprites
+  ==========================================================================
+*/  
+void alderaan(){
+
+   int deathStarX = 2;
+   int deathStarY = 5;
+
+   // fill a green circle for Alderaan
+   matrix.fillCircle(NUM_COL-4, 3, 3, color(GREEN)); matrix.show(); delay(3000);
+   
+   // draw the death star amd animate it on screen
+   for(int i=deathStarX-2; i<=deathStarX; i++) {
+      // clear the previous death star; this is backwards but leaves us in a good state
+      matrix.drawCircle(i-1,deathStarY,2, color(BLACK)); 
+      matrix.drawPixel(i,deathStarY-1, color(BLACK));
+      
+      // draw the next iteration
+      matrix.drawCircle(i,deathStarY,2, color(GRAY)); 
+      matrix.drawPixel(i+1,deathStarY-1, color(YELLOW));
+      matrix.show(); delay(500); 
+   }
+   
+   delay(1000);
+   // draw little yellow highlight lines to show something going on
+   matrix.drawPixel(deathStarX+3,deathStarY-2, color(YELLOW)); matrix.show(); delay(50);
+   matrix.drawPixel(deathStarX+4,deathStarY-3, color(YELLOW)); matrix.show(); delay(50);
+   matrix.drawPixel(deathStarX+3,deathStarY,   color(YELLOW)); matrix.show(); delay(50);
+   matrix.drawPixel(deathStarX+4,deathStarY+1, color(YELLOW)); matrix.show(); delay(50);
+
+   // draw the main death ray
+   matrix.drawLine(deathStarX+1,deathStarY-1, NUM_COL-4,3, color(RED));
+   matrix.show(); delay(200);
+
+   // turn off the highlight lines
+   matrix.drawPixel(deathStarX+3,deathStarY-2, color(BLACK)); matrix.show(); delay(20);
+   matrix.drawPixel(deathStarX+4,deathStarY-3, color(BLACK)); matrix.show(); delay(20);
+   matrix.drawPixel(deathStarX+3,deathStarY,   color(BLACK)); matrix.show(); delay(20);
+   matrix.drawPixel(deathStarX+4,deathStarY+1, color(BLACK)); matrix.show(); delay(20);
+   delay(500);
+
+   // clear the death ray
+   matrix.drawLine(deathStarX+1,deathStarY-1, NUM_COL-4,3, color(BLACK));
+   matrix.drawCircle(deathStarX,deathStarY,2, color(GRAY)); 
+   matrix.drawPixel(deathStarX+1,deathStarY-1, color(YELLOW));
+   matrix.show(); delay(20); 
+   
+   // blow up sequence
+   matrix.drawLine(NUM_COL-4,3, NUM_COL-7,1,color(RED));
+   matrix.drawLine(NUM_COL-4,3, NUM_COL,0,color(RED));
+   matrix.drawLine(NUM_COL-4,3, NUM_COL-8,NUM_ROW,color(RED));
+   matrix.drawLine(NUM_COL-4,3, NUM_COL,NUM_ROW-1,color(RED));
+   matrix.show(); delay(20);
+
+   // orange exanding circle part of blowup sequence
+   matrix.fillCircle(NUM_COL-4, 3, 1, color(ORANGE)); matrix.show(); delay(500);
+   matrix.fillCircle(NUM_COL-4, 3, 2, color(ORANGE)); matrix.show(); delay(500);
+   matrix.fillCircle(NUM_COL-4, 3, 3, color(ORANGE)); matrix.show(); delay(500);
+   matrix.fillCircle(NUM_COL-4, 3, 2, color(BLACK)); matrix.show(); delay(500);
+   matrix.fillCircle(NUM_COL-4, 3, 4, color(ORANGE)); 
+   matrix.fillCircle(NUM_COL-4, 3, 3, color(BLACK)); matrix.show(); delay(500);
+   matrix.fillCircle(NUM_COL-4, 3, 5, color(ORANGE)); 
+   matrix.fillCircle(NUM_COL-4, 3, 4, color(BLACK)); matrix.show(); delay(500);
+   matrix.fillCircle(NUM_COL-4, 3, 6, color(ORANGE)); 
+   matrix.fillCircle(NUM_COL-4, 3, 6, color(BLACK)); matrix.show(); delay(500);
+   
+   delay(500);
+
+} // end alderaan
+
+
+
+/*==========================================================================
+  pacman: creates a pacman animation using matrix.drawBitmap animations
+  ==========================================================================
+*/  
+void pacman(){
+
+  // draw yellow dots for pacman to eat
+  for(int i=1; i<NUM_COL; i=i+3) {
+     matrix.drawPixel(i,3, color(GRAY));
+     matrix.show();
+     delay(50);
+  }
+  delay(1000);
+  
+  for(int i=0; i<NUM_COL; i=i+3) {
+     matrix.drawBitmap(i,0, pacmanOpen, 8, 8, color(YELLOW));  matrix.show();
+     delay(30);
+     matrix.drawBitmap(i,0, pacmanOpen, 8, 8, color(BLACK));   matrix.show();
+     //delay(2);
+
+     matrix.drawBitmap(i,0, pacmanOpen, 8, 8, color(YELLOW));  matrix.show();
+     delay(30);
+     matrix.drawBitmap(i,0, pacmanOpen, 8, 8, color(BLACK));   matrix.show();
+     //delay(2);
+
+     matrix.drawBitmap(i+2,0, pacmanClosed, 8, 8, color(YELLOW)); matrix.show();
+     delay(50);
+     matrix.drawBitmap(i+2,0, pacmanClosed, 8, 8, color(BLACK));  matrix.show();
+     //delay(2);
+  }
+  
+} // end pacman
+
+//==========================================================================
+void boxAnimation(int numTimes) {
+ 
+   // try a going through space animation, where the interior most box works its way out to the edge
+   for(int i=0; i<numTimes; i++) {
+      matrix.drawRect(0, 0, NUM_COL,   NUM_ROW,   color(BLACK));
+      matrix.drawRect(3, 3, NUM_COL-6, NUM_ROW-6, color(GRAY)); 
+      matrix.show(); delay(100);
+
+      matrix.drawRect(3, 3, NUM_COL-6, NUM_ROW-6, color(BLACK)); 
+      matrix.drawRect(2, 2, NUM_COL-4, NUM_ROW-4, color(GRAY));
+      matrix.show(); delay(100);
+
+      matrix.drawRect(2, 2, NUM_COL-4, NUM_ROW-4, color(BLACK));
+      matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, color(GRAY)); 
+      matrix.show(); delay(100);
+
+      matrix.drawRect(1, 1, NUM_COL-2, NUM_ROW-2, color(BLACK)); 
+      matrix.drawRect(0, 0, NUM_COL,   NUM_ROW,   color(GRAY));
+      matrix.show(); delay(100);
+   }
+
+} // end boxAnimation
 
 //==========================================================================
 // Scroll text
@@ -292,7 +378,7 @@ void theaterChase(uint32_t c, uint8_t wait) {
 //==========================================================================
 //Theatre-style crawling lights with rainbow effect
 void theaterChaseRainbow(uint8_t wait) {
-  for (int j=0; j < 256; j++) {     // cycle all 256 colors in the wheel
+  for (int j=0; j < 256; j=j+3) {     // cycle all 256 colors in the wheel
     for (int q=0; q < 3; q++) {
       for (int i=0; i < wholeStrip.numPixels(); i=i+3) {
         wholeStrip.setPixelColor(i+q, Wheel( (i+j) % 255));    //turn every third pixel on
@@ -348,6 +434,16 @@ void testMatrixWipe(int wait){
      } // end for x
   } // end for y
 } // end testMatrixWipe
+
+//===================================================================================
+// converts a HEX color into a matrix color. makes color handling easier.
+uint16_t color(unsigned long c) {
+   byte red = (c & 0xFF0000) >> 16;
+   byte green = ( c & 0x00FF00) >> 8;
+   byte blue = (c & 0x0000FF);
+   return matrix.Color(red, green, blue);
+} // end color
+
 
 //==========================================================================
 // Wheel: Input a value 0 to 255 to get a color value.
