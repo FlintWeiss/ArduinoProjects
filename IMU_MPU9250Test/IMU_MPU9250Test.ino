@@ -28,7 +28,7 @@
 #include <mpu9250.h>
 
 
-#define AHRS false         // Set to false for basic data read
+#define AHRS true         // Set to false for basic data read
 #define SerialDebug true  // Set to true to get Serial output for debugging
 
 // Pin definitions
@@ -54,7 +54,7 @@ void setup()
   Serial.print("MPU9250 "); Serial.print("I AM "); Serial.print(c, HEX);
   Serial.print(" I should be "); Serial.println(0x71, HEX);
 
-  if (c == 0x71) // WHO_AM_I should always be 0x68
+  if (c == 0x71) // WHO_AM_I should always be 0x71
   {
     Serial.println("MPU9250 is online...");
 
