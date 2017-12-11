@@ -4,7 +4,7 @@
 */
 
 
-static unsigned char PROGMEM pacmanOpen[] =
+const static unsigned char PROGMEM pacmanOpen[] =
 {
 0b00111100,
 0b01111110,
@@ -15,7 +15,7 @@ static unsigned char PROGMEM pacmanOpen[] =
 0b00111100,
 0b00000000};
 
-static unsigned char PROGMEM pacmanClosed[] =
+const static unsigned char PROGMEM pacmanClosed[] =
 {
 0b00111100,
 0b01111110,

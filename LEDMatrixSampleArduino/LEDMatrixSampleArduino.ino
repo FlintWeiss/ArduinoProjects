@@ -100,7 +100,10 @@ void setup() {
 
 //--------------------------------------------------------------------------------
 void loop() {
-      
+
+   blinkLED(3);
+
+   digitalWrite(13, HIGH);
    lightsOff();
    
    testMatrixWipe(1); lightsOff(); delay(500);
